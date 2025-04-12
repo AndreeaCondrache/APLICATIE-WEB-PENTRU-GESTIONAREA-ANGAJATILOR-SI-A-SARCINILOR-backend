@@ -19,7 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static org.springframework.util.StringUtils.*;
+
 
 @Component
 @RequiredArgsConstructor
@@ -55,8 +55,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 securityContext.setAuthentication(authenticationToken);
                 SecurityContextHolder.setContext(securityContext);
+                System.out.println("✅ Authenticated user: " + userEmail);
+                System.out.println("👉 Authorities from token: " + userDetails.getAuthorities());
+
+
             }
         }
         filterChain.doFilter(request, response);
+        System.out.println("Token primit: " + jwt);
+        System.out.println("Email extras din token: " + userEmail);
+
     }
+
+
 }

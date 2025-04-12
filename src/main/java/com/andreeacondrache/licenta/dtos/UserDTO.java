@@ -1,9 +1,9 @@
 package com.andreeacondrache.licenta.dtos;
+import com.andreeacondrache.licenta.enums.Department;
 import com.andreeacondrache.licenta.enums.UserRole;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 public class UserDTO  {
@@ -13,4 +13,13 @@ public class UserDTO  {
     private String email;
     private String password;
     private UserRole userRole;
+
+    @Getter
+    private Department department;
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+
 }

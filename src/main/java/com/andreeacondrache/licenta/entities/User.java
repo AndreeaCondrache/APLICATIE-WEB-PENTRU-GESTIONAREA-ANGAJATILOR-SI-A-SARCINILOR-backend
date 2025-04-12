@@ -1,8 +1,10 @@
 package com.andreeacondrache.licenta.entities;
 import com.andreeacondrache.licenta.dtos.UserDTO;
+import com.andreeacondrache.licenta.enums.Department;
 import com.andreeacondrache.licenta.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,13 +24,23 @@ public class User implements UserDetails {
     private String name;
     private String email;
     private String password;
+
+    //@Enumerated(EnumType.STRING)
     private UserRole userRole;
+
+
+    @Getter
+    private Department department; // nou câmp
+
     public UserDTO getUserDTO(){
         UserDTO userDTO = new UserDTO();
         userDTO.setId(id);
         userDTO.setName(name);
         userDTO.setEmail(email);
         userDTO.setUserRole(userRole);
+        userDTO.setDepartment(department);
+
+
         return userDTO;
     }
 
@@ -61,4 +73,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
+
 }

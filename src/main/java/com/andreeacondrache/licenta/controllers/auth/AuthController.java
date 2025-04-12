@@ -1,4 +1,5 @@
 package com.andreeacondrache.licenta.controllers.auth;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.andreeacondrache.licenta.dtos.AuthenticationRequest;
 import com.andreeacondrache.licenta.dtos.AuthenticationResponse;
@@ -19,6 +20,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import java.util.Optional;
 
 @RestController
@@ -37,37 +41,49 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest){
-        if(authService.hasUserWithEmail(signupRequest.getEmail())){
+    public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) {
+        if (authService.hasUserWithEmail(signupRequest.getEmail())) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("User already exist with the provided email!");
         }
         UserDTO userDTO = authService.signup(signupRequest);
-        if(userDTO == null)
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if (userDTO == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
 
     }
 
     @PostMapping("/login")
-    public AuthenticationResponse login(@RequestBody AuthenticationRequest authenticationRequest) {
-        try{
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) {
+        try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getEmail(),
                     authenticationRequest.getPassword()
             ));
-        }catch (BadCredentialsException e){
+        } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Username or password is incorrect!");
         }
-        UserDetails  userDetails = userService.userDetailsService().loadUserByUsername(authenticationRequest.getEmail());
+
+        UserDetails userDetails = userService.userDetailsService().loadUserByUsername(authenticationRequest.getEmail());
         Optional<User> optionalUser = userRepository.findFirstByEmail(authenticationRequest.getEmail());
         final String jwt = jwtUtil.generateToken(userDetails);
-        AuthenticationResponse response = new AuthenticationResponse();
 
-        if(optionalUser.isPresent()){
-            response.setJwt(jwt);
-            response.setUserRole(optionalUser.get().getUserRole());
-            response.setUserId(optionalUser.get().getId());
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("jwt", jwt);
+            responseMap.put("userId", user.getId());
+            responseMap.put("userRole", user.getUserRole().name());
+            responseMap.put("userName", user.getName()); // ✅ numele userului
+
+            return ResponseEntity.ok(responseMap);
         }
-        return  response;
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials.");
     }
+   // @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN')")
+    @GetMapping("/test")
+    public ResponseEntity<String> testToken() {
+        return ResponseEntity.ok("Token primit corect!");
+    }
+
 }
