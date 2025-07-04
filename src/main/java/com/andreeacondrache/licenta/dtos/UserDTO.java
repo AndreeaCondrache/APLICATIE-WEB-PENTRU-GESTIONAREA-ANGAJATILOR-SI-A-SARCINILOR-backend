@@ -1,6 +1,8 @@
 package com.andreeacondrache.licenta.dtos;
 import com.andreeacondrache.licenta.enums.Department;
 import com.andreeacondrache.licenta.enums.UserRole;
+import com.andreeacondrache.licenta.entities.User;
+
 
 import lombok.Data;
 import lombok.Getter;
@@ -22,4 +24,4 @@ public class UserDTO  {
     }
 
 
-}
+    }

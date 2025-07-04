@@ -62,9 +62,10 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Username or password is incorrect!");
         }
-
-        UserDetails userDetails = userService.userDetailsService().loadUserByUsername(authenticationRequest.getEmail());
-        Optional<User> optionalUser = userRepository.findFirstByEmail(authenticationRequest.getEmail());
+        UserDetails userDetails = userService.userDetailsService().
+                loadUserByUsername(authenticationRequest.getEmail());
+        Optional<User> optionalUser = userRepository.
+                findFirstByEmail(authenticationRequest.getEmail());
         final String jwt = jwtUtil.generateToken(userDetails);
 
         if (optionalUser.isPresent()) {

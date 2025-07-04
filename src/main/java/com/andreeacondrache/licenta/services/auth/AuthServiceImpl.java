@@ -18,7 +18,7 @@ public class AuthServiceImpl implements  AuthService{
     private final UserRepository userRepository;
     @PostConstruct
     private void createAnAdminAccount(){
-        Optional<User> optionalUser = userRepository.findByUserRole(UserRole.ADMIN);
+        Optional<User> optionalUser = userRepository.findFirstByUserRole(UserRole.ADMIN);
     if(optionalUser.isEmpty()){
         User newAdmin = new User();
         newAdmin.setName("Admin");

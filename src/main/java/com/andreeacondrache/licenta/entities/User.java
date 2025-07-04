@@ -14,23 +14,18 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "/users")
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
     private String name;
     private String email;
     private String password;
-
-    //@Enumerated(EnumType.STRING)
     private UserRole userRole;
-
-
     @Getter
-    private Department department; // nou câmp
+    private Department department;
 
     public UserDTO getUserDTO(){
         UserDTO userDTO = new UserDTO();
@@ -39,8 +34,6 @@ public class User implements UserDetails {
         userDTO.setEmail(email);
         userDTO.setUserRole(userRole);
         userDTO.setDepartment(department);
-
-
         return userDTO;
     }
 

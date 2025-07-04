@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 public class AdminController {
 
     private final AdminService adminService;
-    private final UserRepository userRepository; // ✅ injectează repo
-    private final PasswordEncoder passwordEncoder; // ✅ injectează encoder
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/users")
     public ResponseEntity<?> getUsers(){
@@ -64,7 +64,7 @@ public class AdminController {
     }
 
     @GetMapping("/tasks/search/{title}")
-    public ResponseEntity<?> searchTask(@PathVariable String title){
+    public ResponseEntity<?> searchTask(@RequestParam  String title){
         return ResponseEntity.ok(adminService.searchTask(title));
     }
 
@@ -104,7 +104,7 @@ public class AdminController {
         User user = new User();
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword())); // 🔐
+        user.setPassword(passwordEncoder.encode(request.getPassword())); //
         user.setUserRole(UserRole.EMPLOYEE);
         user.setDepartment(request.getDepartment());
 
@@ -169,8 +169,38 @@ public class AdminController {
     }
 
 
+    @DeleteMapping("/comment/{id}")
+    public ResponseEntity<?> deleteComment(@PathVariable Long id) {
+        adminService.deleteComment(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/tasks/user/{userId}")
+    public ResponseEntity<?> getTasksByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(adminService.getTasksByUserId(userId));
+    }
 
 
+    @GetMapping("/statistics/top-productivity")
+    public ResponseEntity<?> getTopProductivity(
+            @RequestParam(required = false) String period,
+            @RequestParam(required = false) String department,
+            @RequestParam(required = false) Long employeeId
+    ) {
+        List<Map<String, Object>> result = adminService.getTopProductivity(period, department, employeeId);
+        return ResponseEntity.ok(result);
+    }
+
+
+    @GetMapping("/statistics/completed-tasks")
+    public ResponseEntity<?> getCompletedTaskCount(
+            @RequestParam(required = false) String period,
+            @RequestParam(required = false) String department,
+            @RequestParam(required = false) Long employeeId
+    ) {
+        long count = adminService.countCompletedTasks(period, department, employeeId);
+        return ResponseEntity.ok(count);
+    }
 
 
 }

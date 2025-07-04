@@ -5,6 +5,7 @@ import com.andreeacondrache.licenta.dtos.TaskDTO;
 import com.andreeacondrache.licenta.dtos.UserDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AdminService {
 
@@ -15,6 +16,8 @@ public interface AdminService {
     List<TaskDTO> getTasks();
 
     TaskDTO getTaskById(Long id);
+    List<TaskDTO> getTasksByUserId(Long userId);
+
 
     void deleteTask(Long id);
 
@@ -25,5 +28,10 @@ public interface AdminService {
     CommentDTO createComment(Long taskId, Long postedBy, String content);
 
     List<CommentDTO> getCommentsByTask(Long taskId);
+
+    void deleteComment(Long id);
+    List<Map<String, Object>> getTopProductivity(String period, String department, Long employeeId);
+
+    long countCompletedTasks(String period, String department, Long employeeId);
 
 }

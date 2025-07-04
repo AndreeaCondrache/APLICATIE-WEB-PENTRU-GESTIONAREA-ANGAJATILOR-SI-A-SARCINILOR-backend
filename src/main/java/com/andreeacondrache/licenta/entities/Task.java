@@ -13,26 +13,20 @@ import java.util.Date;
 @Entity
 @Data
 public class Task {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
-
     private String title;
-
     private Date dueDate;
-
     private String description;
-
     private String priority;
-
-    @Enumerated(EnumType.STRING)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
+
+
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-
+    @Enumerated(EnumType.STRING)
 
 
     private User user;

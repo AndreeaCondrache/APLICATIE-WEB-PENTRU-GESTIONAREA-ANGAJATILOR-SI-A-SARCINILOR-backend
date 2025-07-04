@@ -5,6 +5,8 @@ import lombok.Data;
 
 import java.util.Date;
 
+import com.andreeacondrache.licenta.entities.Task;
+
 @Data
 public class TaskDTO {
 
@@ -23,5 +25,7 @@ public class TaskDTO {
     private  Long employeeId;
 
     private String employeeName;
+
+
 
 }
