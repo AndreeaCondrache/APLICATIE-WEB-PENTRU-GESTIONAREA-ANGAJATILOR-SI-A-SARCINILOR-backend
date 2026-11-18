@@ -86,8 +86,6 @@ Relationships:
 |---|---|
 | ![Overdue alert](screenshots/overdue-alert.jpg) | ![TaskBot](screenshots/taskbot.jpg) |
 
-🎥 **Demo video:** [link to demo video]
-
 ---
 
 ## 🚀 Getting Started
