@@ -3,7 +3,6 @@
 A full-stack web application for managing employees and the tasks assigned to them within an organization. Administrators organize employees by department, assign and track tasks, and monitor productivity through statistics. Employees see their own tasks, update their progress, and get alerts for overdue work.
 
 > 🎓 Bachelor's thesis project – Transilvania University of Brașov, Department of Automation and Information Technology (2025)
-> Scientific coordinator: Assoc. Prof. Dr. Eng. Dominic M. Kristaly
 
 ![Landing page](screenshots/landing.jpg)
 
